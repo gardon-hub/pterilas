@@ -1,0 +1,531 @@
+<meta charset="utf-8">
+<title>Pterilografía Aviar</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#F2F1E8; --panel:#FFFFFF; --panel-2:#F7F6EF;
+  --ink:#1B2521; --ink-2:#4B5751; --ink-3:#86908A; --line:#DAD9CC;
+  --accent:#E6AE0A; --accent-ink:#4D3800; --accent-soft:#FBEDB8;
+  --blue:#1E5C77; --blue-soft:#DCEBF2;
+  --bird:#FFFFFF; --bird-line:#1B2521; --dot:#1B2521;
+  --hl:#FFD23F; --ok:#2B8A4B; --ok-soft:#DDF1E3; --bad:#C43C2A; --bad-soft:#F8DEDA;
+  --focus:#1E5C77; --shadow:0 1px 2px rgba(27,37,33,.06),0 8px 24px -12px rgba(27,37,33,.18);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#131816; --panel:#1C2321; --panel-2:#222B28;
+    --ink:#ECEAE0; --ink-2:#B6BDB7; --ink-3:#7F8983; --line:#303B37;
+    --accent:#F0BF2A; --accent-ink:#2A1F00; --accent-soft:#3A3010;
+    --blue:#82C3DF; --blue-soft:#1B303A;
+    --bird:#232C2A; --bird-line:#ECEAE0; --dot:#ECEAE0;
+    --hl:#D9A400; --ok:#5DC07E; --ok-soft:#1E3A2A; --bad:#E8735F; --bad-soft:#44241F;
+    --focus:#82C3DF; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#131816; --panel:#1C2321; --panel-2:#222B28;
+  --ink:#ECEAE0; --ink-2:#B6BDB7; --ink-3:#7F8983; --line:#303B37;
+  --accent:#F0BF2A; --accent-ink:#2A1F00; --accent-soft:#3A3010;
+  --blue:#82C3DF; --blue-soft:#1B303A;
+  --bird:#232C2A; --bird-line:#ECEAE0; --dot:#ECEAE0;
+  --hl:#D9A400; --ok:#5DC07E; --ok-soft:#1E3A2A; --bad:#E8735F; --bad-soft:#44241F;
+  --focus:#82C3DF; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+b,strong{font-weight:600}
+button{font:inherit;color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:28px 24px 48px}
+.top{display:grid;grid-template-columns:1fr auto;gap:12px 32px;align-items:end;padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:22px}
+.eyebrow{font:500 11px/1 "IBM Plex Mono",ui-monospace,monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
+h1{font:800 clamp(30px,4.4vw,46px)/1 "Bricolage Grotesque","IBM Plex Sans",sans-serif;letter-spacing:-.02em;margin:0 0 10px;text-wrap:balance}
+h1 em{font-style:normal;color:var(--accent);}
+.lede{margin:0;max-width:62ch;color:var(--ink-2)}
+.legend{display:flex;gap:16px;align-items:center;font:500 12px/1 "IBM Plex Mono",ui-monospace,monospace;color:var(--ink-2);white-space:nowrap;padding-bottom:6px}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{width:22px;height:14px;border:1.5px solid var(--bird-line);border-radius:3px;background:var(--bird)}
+.legend i.pt{background:radial-gradient(circle,var(--dot) 1.2px,transparent 1.4px) 0 0/5px 5px,var(--bird)}
+.app{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(320px,380px);gap:22px;align-items:start}
+@media (max-width:900px){.app{grid-template-columns:1fr}.top{grid-template-columns:1fr}.legend{white-space:normal;flex-wrap:wrap}}
+
+/* figure panel */
+.figure{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow)}
+.figbar{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)}
+.switch{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-2);cursor:pointer;user-select:none}
+.switch input{accent-color:var(--blue);width:15px;height:15px;margin:0}
+.switch.off{opacity:.45;cursor:not-allowed}
+.fighint{margin-left:auto;font:500 12px/1.3 "IBM Plex Mono",ui-monospace,monospace;color:var(--ink-3)}
+.views{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px 12px 10px}
+@media (max-width:560px){.views{grid-template-columns:1fr}}
+.views figure{margin:0;padding:0}
+.views svg{width:100%;height:auto;display:block}
+.views figcaption{display:flex;align-items:center;gap:8px;justify-content:center;font:500 12px/1 "IBM Plex Mono",ui-monospace,monospace;color:var(--ink-2);padding:6px 0 4px}
+.tag{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--bg);font:700 12px/1 "Bricolage Grotesque",sans-serif}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font:600 13px/1 "IBM Plex Sans",sans-serif;padding:7px 10px;border-radius:6px;transform:translate(-50%,calc(-100% - 12px));white-space:nowrap;z-index:3}
+.tip::after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--ink)}
+
+/* svg bits */
+.bird{fill:var(--bird);stroke:var(--bird-line);stroke-width:1.6;stroke-linejoin:round}
+.bird.thin{stroke-width:1.2}
+.toes{fill:none;stroke:var(--bird-line);stroke-width:1.6;stroke-linecap:round}
+.dotp{fill:var(--dot)}
+.eye{fill:var(--bird-line)}
+.region{cursor:pointer;outline:none}
+.region .base{fill:var(--hl);fill-opacity:0;stroke:var(--hl);stroke-width:0;transition:fill-opacity .15s}
+.region .dots{pointer-events:none;transition:opacity .2s}
+.no-dots .region .dots{opacity:0}
+.hoverable .region:hover .base{fill-opacity:.6}
+.region:focus-visible .base{stroke:var(--focus);stroke-width:2.5;stroke-dasharray:4 3}
+.region.sel .base{fill-opacity:.75}
+.region.target .base{fill-opacity:.8;animation:pulse 1.1s ease-in-out infinite}
+.region.ok .base{fill:var(--ok);fill-opacity:.7}
+.region.bad .base{fill:var(--bad);fill-opacity:.62}
+.region.reveal .base{fill:var(--ok);fill-opacity:.7;animation:pulse .55s ease-in-out 4}
+.quiet .region{cursor:default}
+@keyframes pulse{0%,100%{fill-opacity:.8}50%{fill-opacity:.3}}
+@media (prefers-reduced-motion:reduce){.region.target .base,.region.reveal .base{animation:none}}
+.labels{display:none;pointer-events:none}
+.show-names .labels{display:block}
+.labels line{stroke:var(--ink-2);stroke-width:1}
+.labels circle{fill:var(--ink-2)}
+.labels text{font:500 11.5px "IBM Plex Mono",ui-monospace,monospace;fill:var(--ink);paint-order:stroke;stroke:var(--panel);stroke-width:3px;stroke-linejoin:round}
+
+/* side panel */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);overflow:hidden;position:sticky;top:16px}
+.modes{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line);background:var(--panel-2)}
+.modes button{background:none;border:0;border-bottom:2px solid transparent;padding:12px 6px 11px;font:600 13px/1 "IBM Plex Sans",sans-serif;color:var(--ink-2);cursor:pointer}
+.modes button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent);background:var(--panel)}
+.modes button:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+.score{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}
+.score div{padding:10px 14px;border-right:1px solid var(--line)}
+.score div:last-child{border-right:0}
+.score .k{display:block;font:500 10.5px/1 "IBM Plex Mono",ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:5px}
+.score .v{font:700 20px/1 "Bricolage Grotesque",sans-serif;font-variant-numeric:tabular-nums}
+.body{padding:18px 18px 20px}
+.body p{margin:0 0 12px;color:var(--ink-2)}
+.body p.ink{color:var(--ink)}
+h2{font:700 18px/1.2 "Bricolage Grotesque",sans-serif;margin:0 0 10px;letter-spacing:-.01em}
+.sub{font:500 11px/1 "IBM Plex Mono",ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0 0 8px}
+.qname{font:800 34px/1 "Bricolage Grotesque",sans-serif;letter-spacing:-.02em;margin:2px 0 10px;text-wrap:balance}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 10px;font:500 11.5px/1 "IBM Plex Mono",ui-monospace,monospace;background:var(--blue-soft);color:var(--blue)}
+.chip.acc{background:var(--accent-soft);color:var(--accent-ink)}
+.prog{height:4px;background:var(--line);border-radius:2px;overflow:hidden;margin:0 0 16px}
+.prog i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 14px}
+.opt,.btn{border:1.5px solid var(--line);background:var(--panel);border-radius:8px;padding:11px 12px;font-weight:600;cursor:pointer;text-align:left;transition:border-color .12s,background .12s}
+.opt:hover,.btn:hover{border-color:var(--ink-3)}
+.opt:focus-visible,.btn:focus-visible,.rlist button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.opt.ok{border-color:var(--ok);background:var(--ok-soft)}
+.opt.bad{border-color:var(--bad);background:var(--bad-soft)}
+.opt:disabled{cursor:default}
+.btn{text-align:center;width:100%}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.primary:hover{opacity:.9}
+.btn.ghost{background:transparent;color:var(--ink-2);font-weight:500}
+.row{display:flex;gap:8px}
+.row .btn{flex:1}
+.fb{min-height:44px;border-radius:8px;padding:10px 12px;font-weight:500;margin:0 0 12px;background:var(--panel-2);color:var(--ink-2)}
+.fb.ok{background:var(--ok-soft);color:var(--ok)}
+.fb.bad{background:var(--bad-soft);color:var(--bad)}
+.rlist{display:grid;gap:4px;margin:0 0 14px}
+.rlist .grp{font:500 10.5px/1 "IBM Plex Mono",ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:8px 0 4px}
+.rlist button{display:flex;align-items:center;gap:10px;border:0;background:none;padding:7px 8px;border-radius:6px;cursor:pointer;text-align:left;font-weight:500}
+.rlist button:hover{background:var(--panel-2)}
+.rlist button.on{background:var(--accent-soft);color:var(--accent-ink)}
+.rlist button i{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--bird-line);background:radial-gradient(circle,var(--dot) 1px,transparent 1.2px) 0 0/4px 4px,var(--bird);flex:none}
+.info{border-top:1px solid var(--line);padding-top:14px}
+.info h3{font:700 16px/1.2 "Bricolage Grotesque",sans-serif;margin:0 0 6px}
+.info p{color:var(--ink-2);margin:0}
+.res{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 14px}
+.res div{background:var(--panel-2);border-radius:8px;padding:12px 14px}
+.res .k{display:block;font:500 10.5px/1 "IBM Plex Mono",ui-monospace,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.res .v{font:800 30px/1 "Bricolage Grotesque",sans-serif;font-variant-numeric:tabular-nums}
+.errs{margin:0 0 14px;padding:0;list-style:none;display:grid;gap:6px}
+.errs li{font-size:13.5px;padding:8px 10px;border-left:3px solid var(--bad);background:var(--bad-soft);border-radius:0 6px 6px 0}
+.timer{font:500 13px/1 "IBM Plex Mono",ui-monospace,monospace;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.credits{margin-top:34px;padding-top:22px;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;gap:20px 40px}
+@media (max-width:700px){.credits{grid-template-columns:1fr}}
+.credits h2{margin-bottom:6px}
+.credits .role{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 10px;font:500 11.5px/1 "IBM Plex Mono",ui-monospace,monospace;background:var(--accent-soft);color:var(--accent-ink);margin:2px 0 12px}
+.credits ul{list-style:none;margin:0;padding:0;display:grid;gap:5px;font-size:13.5px;color:var(--ink-2)}
+.credits ul b{color:var(--ink)}
+.credits p{margin:0 0 8px;font-size:13.5px;color:var(--ink-2)}
+.credits cite{font-style:italic}
+.credits .fine{font-size:12px;color:var(--ink-3);margin-top:10px}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <pattern id="dots" patternUnits="userSpaceOnUse" width="7" height="7">
+      <circle class="dotp" cx="3.5" cy="3.5" r="1.55"/>
+    </pattern>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow">Sistemas de Producción Avícola · Anatomía externa del ave</div>
+      <h1>Pterilografía <em>Aviar</em></h1>
+      <p class="lede">Las plumas no nacen por todo el cuerpo: se insertan en zonas definidas llamadas <b>pterilas</b>, separadas por zonas desnudas llamadas <b>apterios</b>. Explora las 10 regiones y luego ponte a prueba hasta ubicarlas sin pensarlo.</p>
+    </div>
+    <div class="legend"><span><i class="pt"></i> pterila (con plumas)</span><span><i></i> apterio (desnudo)</span></div>
+  </header>
+
+  <div class="app">
+    <section class="figure" id="figure">
+      <div class="figbar">
+        <label class="switch"><input type="checkbox" id="tgDots" checked> Mostrar folículos</label>
+        <label class="switch" id="lbNames"><input type="checkbox" id="tgNames"> Mostrar nombres</label>
+        <span class="fighint" id="fighint">Pasa el cursor sobre una región</span>
+      </div>
+      <div class="views">
+        <figure><div id="svgD"></div><figcaption><span class="tag">A</span> Vista dorsal</figcaption></figure>
+        <figure><div id="svgV"></div><figcaption><span class="tag">B</span> Vista ventral</figcaption></figure>
+      </div>
+      <div class="tip" id="tip" hidden></div>
+    </section>
+
+    <aside class="panel">
+      <nav class="modes" role="tablist" id="modes">
+        <button role="tab" data-mode="explorar" aria-selected="true">Explorar</button>
+        <button role="tab" data-mode="localizar" aria-selected="false">Localizar</button>
+        <button role="tab" data-mode="nombrar" aria-selected="false">Nombrar</button>
+        <button role="tab" data-mode="examen" aria-selected="false">Examen</button>
+      </nav>
+      <div class="score" id="score">
+        <div><span class="k">Aciertos</span><span class="v" id="sAc">0 / 0</span></div>
+        <div><span class="k">Racha</span><span class="v" id="sRa">0</span></div>
+        <div><span class="k">Mejor racha</span><span class="v" id="sBe">0</span></div>
+      </div>
+      <div class="body" id="body"></div>
+    </aside>
+  </div>
+
+  <footer class="credits" id="creditos">
+    <div>
+      <div class="sub">Créditos · Autor</div>
+      <h2>Gustavo Alonso Ardón, MSc.</h2>
+      <span class="role">Candidato a Doctor · Investigador Avícola</span>
+      <ul>
+        <li><b>Profesor Investigador</b></li>
+        <li>Centro Integral de Aprovechamiento Avícola (CIAA)</li>
+        <li>Facultad de Medicina Veterinaria y Zootecnia (FMVZ)</li>
+        <li>Universidad Nacional de Agricultura (UNA)</li>
+        <li>Catacamas, Olancho, Honduras, Centro América</li>
+      </ul>
+    </div>
+    <div>
+      <div class="sub">Créditos · Fuente de la lámina</div>
+      <p>La distribución de las pterilas se tomó de la lámina «Distribución de las plumas» incluida en el documento de la asignatura <b>Sistemas de Producción Avícola</b> titulado <cite>La Industria Avícola</cite>, escrito por Gustavo Alonso Ardón, Profesor Coordinador del CIAA de la Universidad Nacional de Agricultura de Honduras.</p>
+      <p>El ave tiene <b>10 pterilas en total</b>: cefálica, cervical, espinal, humeral, alar, axilar, ventral, femoral, crural y caudal. En la vista dorsal se aprecian 7 y en la ventral 5, porque la cefálica y la crural se ven desde ambos lados.</p>
+      <p class="fine">Material didáctico de uso académico para los estudiantes de la asignatura.</p>
+    </div>
+  </footer>
+</div>
+
+<script>
+/* ---------- geometry ---------- */
+const CX=200;
+const rd=v=>Math.round(v*10)/10;
+const mir=p=>[2*CX-p[0],p[1]];
+const sym=h=>h.concat(h.slice(1,-1).reverse().map(mir));
+function smooth(pts){
+  const n=pts.length;let d=`M${pts[0][0]} ${pts[0][1]}`;
+  for(let i=0;i<n;i++){
+    const p0=pts[(i-1+n)%n],p1=pts[i],p2=pts[(i+1)%n],p3=pts[(i+2)%n];
+    d+=`C${rd(p1[0]+(p2[0]-p0[0])/6)} ${rd(p1[1]+(p2[1]-p0[1])/6)} ${rd(p2[0]-(p3[0]-p1[0])/6)} ${rd(p2[1]-(p3[1]-p1[1])/6)} ${p2[0]} ${p2[1]}`;
+  }
+  return d+'Z';
+}
+const ell=(cx,cy,rx,ry)=>smooth(Array.from({length:10},(_,k)=>{const a=k/10*Math.PI*2;return [rd(cx+rx*Math.cos(a)),rd(cy+ry*Math.sin(a))]}));
+const MIRROR='translate(400 0) scale(-1 1)';
+
+const BODY=smooth(sym([[200,44],[214,48],[226,62],[228,82],[220,102],[211,116],[211,140],[211,170],[214,192],[236,204],[258,232],[268,280],[266,340],[256,392],[240,428],[226,448],[232,470],[228,498],[214,516],[200,522]]));
+const WING=smooth([[230,202],[262,186],[300,170],[340,158],[376,156],[392,166],[386,184],[360,202],[330,226],[300,256],[272,290],[252,318],[244,300],[248,260],[240,230]]);
+const LEG=smooth([[236,404],[256,414],[258,452],[250,486],[246,520],[244,548],[236,552],[234,520],[232,486],[228,452],[226,420]]);
+const TOES='M240 550 L226 574 M240 550 L241 578 M240 550 L255 574';
+const BEAK='M200 28 L192 46 L208 46 Z';
+
+const P={
+  head: ell(200,78,21,27),
+  headV: smooth(sym([[200,84],[211,85],[219,91],[218,100],[210,110],[200,114]])),
+  espinal: smooth(sym([[200,118],[206,122],[207,170],[207,200],[211,250],[222,300],[226,340],[218,390],[209,428],[200,444]])),
+  caudal: smooth(sym([[200,452],[222,458],[228,484],[214,510],[200,516]])),
+  cervical: smooth(sym([[200,112],[206,116],[207,160],[208,196],[200,200]])),
+  belly: smooth(sym([[200,378],[208,382],[210,420],[208,456],[200,464]])),
+  humeral: smooth([[236,206],[268,190],[298,176],[304,190],[282,206],[256,218],[240,220]]),
+  alar: smooth([[306,178],[344,162],[376,160],[388,170],[380,186],[354,200],[326,222],[298,250],[274,282],[266,270],[276,240],[292,214]]),
+  femoral: smooth([[234,348],[254,356],[258,392],[246,414],[232,408],[228,378]]),
+  cruralD: smooth([[234,436],[252,440],[252,480],[244,492],[236,488],[230,462]]),
+  cruralV: smooth([[232,400],[254,406],[258,446],[248,470],[236,466],[228,430]]),
+  axilar: smooth([[246,214],[276,214],[292,228],[270,244],[250,250],[240,234]]),
+  band: smooth([[206,202],[222,212],[238,244],[242,284],[236,322],[224,350],[212,374],[204,372],[210,346],[222,318],[226,284],[222,250],[208,222],[200,206]]),
+};
+
+/* ---------- content ---------- */
+const CEF='Cubre toda la cabeza: frente, corona, occipucio y mejillas. Hacia atrás se continúa con la pterila espinal por el dorso y con la cervical por la garganta.';
+const REGIONS=[
+  {id:'cefalico_d',name:'Cefálico',view:'dorsal',shapes:[[P.head]],desc:CEF},
+  {id:'espinal',name:'Espinal',view:'dorsal',shapes:[[P.espinal]],desc:'Recorre la línea media del dorso desde la base del cuello hasta la rabadilla. Se ensancha en la región lumbar formando la «silla» y da origen a las plumas de la espalda y la rabadilla.'},
+  {id:'humeral',name:'Humeral',view:'dorsal',shapes:[[P.humeral],[P.humeral,MIRROR]],desc:'Banda oblicua sobre el brazo (húmero), en el borde anterior del ala junto al cuerpo. Sus plumas, las escapulares, cubren la unión entre el ala y el dorso.'},
+  {id:'alar',name:'Alar',view:'dorsal',shapes:[[P.alar],[P.alar,MIRROR]],desc:'Ocupa el resto del ala: antebrazo y mano. Aquí se insertan las remeras primarias y secundarias con sus coberteras, es decir, las plumas del vuelo.'},
+  {id:'femoral',name:'Femoral',view:'dorsal',shapes:[[P.femoral],[P.femoral,MIRROR]],desc:'Franja oblicua sobre la cara externa del muslo, desde la rodilla hacia la base de la cola. Cubre el flanco posterior del ave.'},
+  {id:'crural_d',name:'Crural',view:'dorsal',shapes:[[P.cruralD],[P.cruralD,MIRROR]],desc:'Rodea la pierna (tibia) por debajo del muslo. En las razas calzadas se prolonga hasta el tarso y los dedos.'},
+  {id:'caudal',name:'Caudal',view:'dorsal',shapes:[[P.caudal]],desc:'Región de la cola: aquí nacen las rectrices o timoneras y sus coberteras. En su base dorsal se encuentra la glándula uropígea, que produce el aceite con que el ave acicala su plumaje.'},
+  {id:'cefalico_v',name:'Cefálico',view:'ventral',shapes:[[P.headV]],desc:'En la vista ventral solo asoma la parte baja de la pterila cefálica: mejillas y garganta, alrededor de las barbillas. El resto de la cabeza queda oculto por la cara del ave (cresta, ojos y pico), que en esta vista mira hacia nosotros.'},
+  {id:'cervical',name:'Cervical',view:'ventral',shapes:[[P.cervical]],desc:'Franja ventral del cuello, desde la garganta hasta la entrada del pecho. Al llegar al tórax se bifurca en las dos bandas pectorales de la pterila ventral.'},
+  {id:'axilar',name:'Axilar',view:'ventral',shapes:[[P.axilar],[P.axilar,MIRROR]],desc:'Pequeña región en la axila, en la cara interna del ala junto al cuerpo. Cubre el hueco entre el ala y el flanco cuando el ala se pliega.'},
+  {id:'ventral',name:'Ventral',view:'ventral',shapes:[[P.band],[P.band,MIRROR],[P.belly]],desc:'Dos bandas que bajan desde el cuello a ambos lados de la quilla y convergen en el abdomen hasta la cloaca. Entre ellas queda un apterio: la zona desnuda que en la gallina clueca forma el parche de incubación.'},
+  {id:'crural_v',name:'Crural',view:'ventral',shapes:[[P.cruralV],[P.cruralV,MIRROR]],desc:'Cara interna del muslo y la pierna, tal como se ve con el ave boca arriba. Es la misma pterila crural de la vista dorsal.'},
+];
+const NAMES=[...new Set(REGIONS.map(r=>r.name))];
+const byId=Object.fromEntries(REGIONS.map(r=>[r.id,r]));
+
+/* label positions: [regionId, anchor point on region, text position, text-anchor] */
+const LABELS={
+  dorsal:[
+    ['cefalico_d',[182,72],[126,60],'end'],
+    ['alar',[58,174],[28,134],'start'],
+    ['humeral',[272,198],[318,146],'start'],
+    ['espinal',[206,262],[298,326],'start'],
+    ['femoral',[248,384],[318,392],'start'],
+    ['crural_d',[160,462],[112,470],'end'],
+    ['caudal',[188,492],[124,522],'end'],
+  ],
+  ventral:[
+    ['cefalico_v',[184,100],[126,92],'end'],
+    ['cervical',[206,150],[298,120],'start'],
+    ['axilar',[134,230],[70,300],'end'],
+    ['ventral',[202,424],[110,376],'end'],
+    ['crural_v',[248,440],[318,448],'start'],
+  ]
+};
+
+/* ---------- build svgs ---------- */
+function buildSVG(view){
+  const regs=REGIONS.filter(r=>r.view===view);
+  let s=`<svg viewBox="0 0 400 590" role="img" aria-label="Ave en vista ${view}, con las pterilas marcadas">`;
+  if(view==='dorsal')s+=`<path class="bird thin" d="${BEAK}"/>`;
+  s+=`<path class="bird" d="${WING}"/><path class="bird" d="${WING}" transform="${MIRROR}"/>`;
+  s+=`<path class="bird" d="${LEG}"/><path class="bird" d="${LEG}" transform="${MIRROR}"/>`;
+  s+=`<path class="toes" d="${TOES}"/><path class="toes" d="${TOES}" transform="${MIRROR}"/>`;
+  s+=`<path class="bird" d="${BODY}"/>`;
+  if(view==='ventral'){
+    s+=`<path class="toes" d="M200 214 L200 392" stroke-dasharray="2 5" opacity=".55"/>`;
+  }else{
+    s+=`<path class="bird thin" d="M191 46 l3 -10 l4 8 l2 -13 l2 13 l4 -8 l3 10 Z"/>`;
+  }
+  for(const r of regs){
+    s+=`<g class="region" data-id="${r.id}" tabindex="0" role="button" aria-label="Región ${r.name}, vista ${r.view}">`;
+    for(const [d,t] of r.shapes){
+      const tr=t?` transform="${t}"`:'';
+      s+=`<path class="base" d="${d}"${tr}/><path class="dots" d="${d}" fill="url(#dots)"${tr}/>`;
+    }
+    s+='</g>';
+  }
+  if(view==='ventral'){
+    // face features on top of the head: comb, eyes, beak pointing at the viewer, wattles
+    s+=`<g class="face" pointer-events="none">
+      <path class="bird thin" d="M186 60 l3 -11 l5 8 l4 -13 l4 13 l5 -8 l3 11 Z"/>
+      <circle cx="186" cy="74" r="3" class="eye"/><circle cx="214" cy="74" r="3" class="eye"/>
+      <path class="bird thin" d="M190 76 L210 76 L200 102 Z"/><path class="toes" d="M200 76 L200 100" stroke-width="1"/>
+      <circle cx="196" cy="81" r="1.1" class="eye"/><circle cx="204" cy="81" r="1.1" class="eye"/>
+      <ellipse cx="194" cy="107" rx="3.6" ry="6.5" class="bird thin"/><ellipse cx="206" cy="107" rx="3.6" ry="6.5" class="bird thin"/>
+    </g>`;
+  }
+  s+='<g class="labels">';
+  for(const [id,a,t,anc] of LABELS[view]){
+    const r=byId[id];
+    const tx=anc==='end'?t[0]+4:t[0]-4;
+    s+=`<line x1="${a[0]}" y1="${a[1]}" x2="${tx}" y2="${t[1]-4}"/><circle cx="${a[0]}" cy="${a[1]}" r="2.2"/><text x="${t[0]}" y="${t[1]}" text-anchor="${anc}">${r.name}</text>`;
+  }
+  s+='</g></svg>';
+  return s;
+}
+document.getElementById('svgD').innerHTML=buildSVG('dorsal');
+document.getElementById('svgV').innerHTML=buildSVG('ventral');
+const regionEls=[...document.querySelectorAll('.region')];
+const elsOf=pred=>regionEls.filter(el=>pred(byId[el.dataset.id]));
+
+/* ---------- state ---------- */
+const $=id=>document.getElementById(id);
+const fig=$('figure'),bodyEl=$('body'),tip=$('tip');
+let mode='explorar',Q=null,lock=false,deck=[],qi=0,exam=null,sel=null;
+let S={ac:0,tot:0,racha:0,best:0};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const clearMarks=()=>regionEls.forEach(el=>el.classList.remove('sel','target','ok','bad','reveal'));
+function paintScore(){$('sAc').textContent=`${S.ac} / ${S.tot}`;$('sRa').textContent=S.racha;$('sBe').textContent=S.best}
+function resetScore(){S={ac:0,tot:0,racha:0,best:0};paintScore()}
+
+/* toggles */
+const tgDots=$('tgDots'),tgNames=$('tgNames');
+tgDots.addEventListener('change',()=>fig.classList.toggle('no-dots',!tgDots.checked));
+tgNames.addEventListener('change',syncNames);
+function syncNames(){
+  const allowed=mode==='explorar';
+  $('lbNames').classList.toggle('off',!allowed);
+  tgNames.disabled=!allowed;
+  fig.classList.toggle('show-names',allowed&&tgNames.checked);
+}
+
+/* tooltip (only while exploring) */
+fig.addEventListener('pointermove',e=>{
+  const g=e.target.closest('.region');
+  if(!g||mode!=='explorar'){tip.hidden=true;return}
+  const b=fig.getBoundingClientRect();
+  tip.textContent=byId[g.dataset.id].name;
+  tip.style.left=(e.clientX-b.left)+'px';tip.style.top=(e.clientY-b.top)+'px';
+  tip.hidden=false;
+});
+fig.addEventListener('pointerleave',()=>tip.hidden=true);
+
+/* region input */
+regionEls.forEach(el=>{
+  el.addEventListener('click',()=>onRegion(byId[el.dataset.id],el));
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();onRegion(byId[el.dataset.id],el)}});
+});
+function onRegion(r,el){
+  if(mode==='explorar'){selectRegion(r.id);return}
+  if(!Q||Q.type!=='loc'||lock)return;
+  const ok=r.name===Q.target.name;
+  if(ok){elsOf(x=>x.name===r.name).forEach(g=>g.classList.add('ok'))}
+  else{el.classList.add('bad');elsOf(x=>x.name===Q.target.name).forEach(g=>g.classList.add('reveal'))}
+  judge(ok,r.name);
+}
+
+/* ---------- modes ---------- */
+document.getElementById('modes').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;setMode(b.dataset.mode);
+});
+function setMode(m){
+  mode=m;Q=null;lock=false;if(exam&&exam.timer)clearInterval(exam.timer);exam=null;sel=null;
+  document.querySelectorAll('#modes button').forEach(b=>b.setAttribute('aria-selected',b.dataset.mode===m));
+  clearMarks();resetScore();syncNames();
+  fig.classList.toggle('hoverable',m==='explorar'||m==='localizar'||m==='examen');
+  fig.classList.toggle('quiet',m==='nombrar');
+  $('score').style.display=m==='explorar'?'none':'grid';
+  $('fighint').textContent={explorar:'Pasa el cursor o toca una región',localizar:'Toca la región que se te pide',nombrar:'Observa la región que parpadea',examen:'12 preguntas mixtas contra reloj'}[m];
+  ({explorar:renderExplorar,localizar:startLocalizar,nombrar:startNombrar,examen:renderExamIntro})[m]();
+}
+
+/* explorar */
+function renderExplorar(){
+  const grp=v=>REGIONS.filter(r=>r.view===v).map(r=>`<button data-id="${r.id}"><i></i>${r.name}</button>`).join('');
+  bodyEl.innerHTML=`
+    <h2>Mapa de las pterilas</h2>
+    <p>Son <b>10 pterilas en total</b>. Dos de ellas, la cefálica y la crural, se ven tanto desde arriba como desde abajo, por eso aparecen en las dos listas. Toca una región en la figura o en la lista para leer qué es y qué plumas nacen ahí. Activa <b>Mostrar nombres</b> si quieres ver la lámina rotulada.</p>
+    <div class="rlist" id="rlist">
+      <div class="grp">A · Vista dorsal</div>${grp('dorsal')}
+      <div class="grp">B · Vista ventral</div>${grp('ventral')}
+    </div>
+    <div class="info" id="info"><h3>Selecciona una región</h3><p>La descripción aparecerá aquí.</p></div>`;
+  $('rlist').addEventListener('click',e=>{const b=e.target.closest('button');if(b)selectRegion(b.dataset.id)});
+  $('rlist').addEventListener('pointerover',e=>{const b=e.target.closest('button');if(!b)return;regionEls.forEach(el=>el.classList.toggle('sel',el.dataset.id===b.dataset.id||el.dataset.id===sel))});
+  $('rlist').addEventListener('pointerleave',()=>regionEls.forEach(el=>el.classList.toggle('sel',el.dataset.id===sel)));
+}
+function selectRegion(id){
+  sel=id;const r=byId[id];
+  regionEls.forEach(el=>el.classList.toggle('sel',el.dataset.id===id));
+  document.querySelectorAll('#rlist button').forEach(b=>b.classList.toggle('on',b.dataset.id===id));
+  $('info').innerHTML=`<div class="sub">Pterila · vista ${r.view}</div><h3>${r.name}</h3><p>${r.desc}</p>`;
+}
+
+/* question factory */
+const mkLoc=name=>{const rs=REGIONS.filter(r=>r.name===name);const views=[...new Set(rs.map(r=>r.view))];return {type:'loc',target:rs[0],views}};
+const mkName=id=>{const t=byId[id];const opts=shuffle([t.name,...shuffle(NAMES.filter(n=>n!==t.name)).slice(0,3)]);return {type:'name',target:t,opts}};
+
+/* localizar */
+function startLocalizar(){deck=shuffle(NAMES).map(mkLoc);qi=0;nextQ()}
+/* nombrar */
+function startNombrar(){deck=shuffle(REGIONS.map(r=>r.id)).map(mkName);qi=0;nextQ()}
+
+function nextQ(){
+  clearMarks();lock=false;
+  if(qi>=deck.length){return mode==='examen'?finishExam():renderRoundEnd()}
+  Q=deck[qi];
+  if(Q.type==='name')elsOf(r=>r.id===Q.target.id).forEach(el=>el.classList.add('target'));
+  renderQuestion();
+}
+function renderQuestion(){
+  const n=deck.length,pct=Math.round(qi/n*100);
+  const head=`<div class="sub" style="display:flex;justify-content:space-between;align-items:center">${mode==='examen'?'Examen':mode==='localizar'?'Localizar':'Nombrar'} · pregunta ${qi+1} de ${n}${mode==='examen'?`<span class="timer" id="timer">${fmtTime(exam.elapsed)}</span>`:''}</div><div class="prog"><i style="width:${pct}%"></i></div>`;
+  if(Q.type==='loc'){
+    const chip=Q.views.length>1?'<span class="chip acc">en cualquiera de las dos vistas</span>':`<span class="chip">vista ${Q.views[0]}</span>`;
+    bodyEl.innerHTML=`${head}<p class="ink" style="margin-bottom:2px">Toca en la figura la pterila</p><div class="qname">${Q.target.name}</div>${chip}
+      <div class="fb" id="fb" style="margin-top:14px">Haz clic sobre la región correcta.</div>
+      <button class="btn ghost" id="show">No la encuentro · mostrar respuesta</button>`;
+    $('show').addEventListener('click',()=>{if(lock)return;elsOf(r=>r.name===Q.target.name).forEach(g=>g.classList.add('reveal'));judge(false,'—')});
+  }else{
+    bodyEl.innerHTML=`${head}<p class="ink" style="margin-bottom:2px">¿Cómo se llama la región que parpadea?</p><span class="chip">vista ${Q.target.view}</span>
+      <div class="opts" id="opts" style="margin-top:14px">${Q.opts.map(o=>`<button class="opt" data-n="${o}">${o}</button>`).join('')}</div>
+      <div class="fb" id="fb">Elige una de las cuatro opciones.</div>`;
+    $('opts').addEventListener('click',e=>{
+      const b=e.target.closest('.opt');if(!b||lock)return;
+      const ok=b.dataset.n===Q.target.name;
+      b.classList.add(ok?'ok':'bad');
+      document.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.dataset.n===Q.target.name)x.classList.add('ok')});
+      const tel=elsOf(r=>r.id===Q.target.id);tel.forEach(el=>{el.classList.remove('target');el.classList.add(ok?'ok':'reveal')});
+      judge(ok,b.dataset.n);
+    });
+  }
+}
+function judge(ok,chosen){
+  lock=true;S.tot++;
+  if(ok){S.ac++;S.racha++;S.best=Math.max(S.best,S.racha)}else{S.racha=0}
+  paintScore();
+  if(mode==='examen'&&!ok)exam.errors.push({q:Q,chosen});
+  const fb=$('fb');
+  if(fb){fb.className='fb '+(ok?'ok':'bad');fb.textContent=ok?praise():(Q.type==='loc'?`No. La pterila ${Q.target.name.toLowerCase()} es la que se ilumina en verde.`:`No. Era la pterila ${Q.target.name.toLowerCase()}, no la ${chosen.toLowerCase()}.`)}
+  setTimeout(()=>{qi++;nextQ()},ok?900:1700);
+}
+const PR=['Correcto.','Exacto.','Bien ubicada.','Así es.','Perfecto.'];
+const praise=()=>S.racha>=3?`Correcto. Llevas ${S.racha} seguidas.`:PR[Math.floor(Math.random()*PR.length)];
+
+function renderRoundEnd(){
+  Q=null;const pct=Math.round(S.ac/S.tot*100);
+  bodyEl.innerHTML=`<div class="sub">Ronda completa</div><h2>${pct>=90?'Dominas las pterilas.':pct>=70?'Vas bien, repite para afianzar.':'Repasa en Explorar y vuelve a intentarlo.'}</h2>
+    <div class="res"><div><span class="k">Aciertos</span><span class="v">${S.ac} / ${S.tot}</span></div><div><span class="k">Mejor racha</span><span class="v">${S.best}</span></div></div>
+    <div class="row"><button class="btn primary" id="again">Otra ronda</button><button class="btn" id="goExp">Ir a Explorar</button></div>`;
+  $('again').addEventListener('click',()=>{resetScore();mode==='localizar'?startLocalizar():startNombrar()});
+  $('goExp').addEventListener('click',()=>setMode('explorar'));
+}
+
+/* examen */
+const fmtTime=s=>`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+function bestExam(){try{return JSON.parse(localStorage.getItem('pterilas.best'))}catch(e){return null}}
+function renderExamIntro(){
+  const b=bestExam();
+  bodyEl.innerHTML=`<h2>Examen de pterilas</h2>
+    <p>12 preguntas sobre las 10 pterilas: en unas debes <b>localizar</b> la región en la figura y en otras <b>nombrar</b> la que parpadea. Se cronometra el tiempo total.</p>
+    <label class="switch" style="margin:0 0 16px"><input type="checkbox" id="hard"> Modo difícil: ocultar los folículos</label>
+    ${b?`<p style="font:500 12.5px/1.4 'IBM Plex Mono',monospace">Tu mejor marca: ${b.pct}% en ${fmtTime(b.time)}</p>`:''}
+    <button class="btn primary" id="start">Comenzar examen</button>`;
+  $('start').addEventListener('click',()=>{
+    if($('hard').checked){tgDots.checked=false;fig.classList.add('no-dots')}
+    exam={elapsed:0,errors:[],timer:null};
+    exam.timer=setInterval(()=>{exam.elapsed++;const t=$('timer');if(t)t.textContent=fmtTime(exam.elapsed)},1000);
+    const loc=shuffle(NAMES).slice(0,6).map(mkLoc),nm=shuffle(REGIONS.map(r=>r.id)).slice(0,6).map(mkName);
+    deck=shuffle(loc.concat(nm));qi=0;resetScore();nextQ();
+  });
+}
+function finishExam(){
+  clearInterval(exam.timer);Q=null;
+  const pct=Math.round(S.ac/S.tot*100),time=exam.elapsed,prev=bestExam();
+  const isBest=!prev||pct>prev.pct||(pct===prev.pct&&time<prev.time);
+  if(isBest){try{localStorage.setItem('pterilas.best',JSON.stringify({pct,time}))}catch(e){}}
+  const errs=exam.errors.map(e=>e.q.type==='loc'?`<li>Buscabas <b>${e.q.target.name}</b> y tocaste ${e.chosen==='—'?'la ayuda':`<b>${e.chosen}</b>`}.</li>`:`<li>La región <b>${e.q.target.name}</b> (vista ${e.q.target.view}) la llamaste <b>${e.chosen}</b>.</li>`).join('');
+  bodyEl.innerHTML=`<div class="sub">Resultado del examen${isBest?' · nueva mejor marca':''}</div>
+    <h2>${pct===100?'Impecable: 12 de 12.':pct>=80?'Aprobado con buen dominio.':pct>=60?'Aprobado, pero conviene repasar.':'Todavía no. Vuelve a Explorar y repite.'}</h2>
+    <div class="res"><div><span class="k">Nota</span><span class="v">${pct}%</span></div><div><span class="k">Tiempo</span><span class="v">${fmtTime(time)}</span></div></div>
+    ${errs?`<div class="sub">Errores para repasar</div><ul class="errs">${errs}</ul>`:'<p>Sin errores. Prueba el modo difícil sin folículos.</p>'}
+    <div class="row"><button class="btn primary" id="again">Repetir examen</button><button class="btn" id="goExp">Ir a Explorar</button></div>`;
+  $('again').addEventListener('click',()=>setMode('examen'));
+  $('goExp').addEventListener('click',()=>setMode('explorar'));
+}
+
+setMode('explorar');
+</script>
