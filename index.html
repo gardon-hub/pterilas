@@ -46,8 +46,8 @@ h1 em{font-style:normal;color:var(--accent);}
 .lede{margin:0;max-width:62ch;color:var(--ink-2)}
 .legend{display:flex;gap:16px;align-items:center;font:500 12px/1 "IBM Plex Mono",ui-monospace,monospace;color:var(--ink-2);white-space:nowrap;padding-bottom:6px}
 .legend span{display:inline-flex;align-items:center;gap:7px}
-.legend i{width:22px;height:14px;border:1.5px solid var(--bird-line);border-radius:3px;background:var(--bird)}
-.legend i.pt{background:radial-gradient(circle,var(--dot) 1.2px,transparent 1.4px) 0 0/5px 5px,var(--bird)}
+.legend i{width:22px;height:14px;border:1.5px solid #2B2A26;border-radius:3px;background:#E7DFCF}
+.legend i.pt{background:radial-gradient(circle,#2B2A26 .9px,transparent 1.1px) 0 0/4px 4px,#DCD3BF}
 .app{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(320px,380px);gap:22px;align-items:start}
 @media (max-width:900px){.app{grid-template-columns:1fr}.top{grid-template-columns:1fr}.legend{white-space:normal;flex-wrap:wrap}}
 
@@ -67,14 +67,11 @@ h1 em{font-style:normal;color:var(--accent);}
 .tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font:600 13px/1 "IBM Plex Sans",sans-serif;padding:7px 10px;border-radius:6px;transform:translate(-50%,calc(-100% - 12px));white-space:nowrap;z-index:3}
 .tip::after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--ink)}
 
-/* svg bits */
-.bird{fill:var(--bird);stroke:var(--bird-line);stroke-width:1.6;stroke-linejoin:round}
-.bird.thin{stroke-width:1.2}
-.toes{fill:none;stroke:var(--bird-line);stroke-width:1.6;stroke-linecap:round}
-.dotp{fill:var(--dot)}
-.eye{fill:var(--bird-line)}
+/* svg bits (lámina fija, colores independientes del tema) */
 .region{cursor:pointer;outline:none}
-.region .base{fill:var(--hl);fill-opacity:0;stroke:var(--hl);stroke-width:0;transition:fill-opacity .15s}
+.region path{fill-rule:evenodd}
+.region .tint{fill:#B9AC93;fill-opacity:.28}
+.region .base{fill:var(--hl);fill-opacity:0;stroke:var(--hl);stroke-width:0;transition:fill-opacity .15s;mix-blend-mode:multiply}
 .region .dots{pointer-events:none;transition:opacity .2s}
 .no-dots .region .dots{opacity:0}
 .hoverable .region:hover .base{fill-opacity:.6}
@@ -89,9 +86,9 @@ h1 em{font-style:normal;color:var(--accent);}
 @media (prefers-reduced-motion:reduce){.region.target .base,.region.reveal .base{animation:none}}
 .labels{display:none;pointer-events:none}
 .show-names .labels{display:block}
-.labels line{stroke:var(--ink-2);stroke-width:1}
-.labels circle{fill:var(--ink-2)}
-.labels text{font:500 11.5px "IBM Plex Mono",ui-monospace,monospace;fill:var(--ink);paint-order:stroke;stroke:var(--panel);stroke-width:3px;stroke-linejoin:round}
+.labels line{stroke:#2B2A26;stroke-width:.8}
+.labels circle{fill:#2B2A26}
+.labels text{font:500 11px "IBM Plex Sans",system-ui,sans-serif;fill:#2B2A26;paint-order:stroke;stroke:#FBF8F1;stroke-width:3px;stroke-linejoin:round}
 
 /* side panel */
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);overflow:hidden;position:sticky;top:16px}
@@ -135,7 +132,7 @@ h2{font:700 18px/1.2 "Bricolage Grotesque",sans-serif;margin:0 0 10px;letter-spa
 .rlist button{display:flex;align-items:center;gap:10px;border:0;background:none;padding:7px 8px;border-radius:6px;cursor:pointer;text-align:left;font-weight:500}
 .rlist button:hover{background:var(--panel-2)}
 .rlist button.on{background:var(--accent-soft);color:var(--accent-ink)}
-.rlist button i{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--bird-line);background:radial-gradient(circle,var(--dot) 1px,transparent 1.2px) 0 0/4px 4px,var(--bird);flex:none}
+.rlist button i{width:14px;height:14px;border-radius:3px;border:1.5px solid #2B2A26;background:radial-gradient(circle,#2B2A26 .8px,transparent 1px) 0 0/3.5px 3.5px,#DCD3BF;flex:none}
 .info{border-top:1px solid var(--line);padding-top:14px}
 .info h3{font:700 16px/1.2 "Bricolage Grotesque",sans-serif;margin:0 0 6px}
 .info p{color:var(--ink-2);margin:0}
@@ -160,9 +157,46 @@ h2{font:700 18px/1.2 "Bricolage Grotesque",sans-serif;margin:0 0 10px;letter-spa
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <pattern id="dots" patternUnits="userSpaceOnUse" width="7" height="7">
-      <circle class="dotp" cx="3.5" cy="3.5" r="1.55"/>
+    <!-- folículos: filas alternas, puntos pequeños -->
+    <pattern id="dots" patternUnits="userSpaceOnUse" width="5.4" height="4.7">
+      <circle cx="1.35" cy="1.2" r=".85" fill="#2B2A26" opacity=".78"/>
+      <circle cx="4.05" cy="3.55" r=".85" fill="#2B2A26" opacity=".78"/>
     </pattern>
+    <!-- lámina de papel con viñeteado -->
+    <radialGradient id="paper" cx="50%" cy="42%" r="72%">
+      <stop offset="0" stop-color="#FBF8F1"/><stop offset=".7" stop-color="#F8F4EA"/><stop offset="1" stop-color="#F1EBDD"/>
+    </radialGradient>
+    <!-- piel: luz arriba-izquierda -->
+    <radialGradient id="skinR" cx="38%" cy="30%" r="78%">
+      <stop offset="0" stop-color="#F4EFE4"/><stop offset=".55" stop-color="#E7DFCF"/><stop offset="1" stop-color="#C9BDA6"/>
+    </radialGradient>
+    <radialGradient id="skinRm" cx="62%" cy="30%" r="78%">
+      <stop offset="0" stop-color="#F4EFE4"/><stop offset=".55" stop-color="#E7DFCF"/><stop offset="1" stop-color="#C9BDA6"/>
+    </radialGradient>
+    <!-- ala: clara en el borde anterior, más oscura hacia el borde posterior -->
+    <linearGradient id="skinW" x1="0" y1="0" x2=".35" y2="1">
+      <stop offset="0" stop-color="#F4EFE4"/><stop offset=".5" stop-color="#E7DFCF"/><stop offset="1" stop-color="#D3C7AF"/>
+    </linearGradient>
+    <linearGradient id="skinWm" x1="1" y1="0" x2=".65" y2="1">
+      <stop offset="0" stop-color="#F4EFE4"/><stop offset=".5" stop-color="#E7DFCF"/><stop offset="1" stop-color="#D3C7AF"/>
+    </linearGradient>
+    <!-- cresta y barbillas -->
+    <radialGradient id="comb" cx="35%" cy="25%" r="80%">
+      <stop offset="0" stop-color="#F0847C"/><stop offset=".55" stop-color="#D8463C"/><stop offset="1" stop-color="#9E2A22"/>
+    </radialGradient>
+    <!-- pico y tarsos -->
+    <linearGradient id="beak" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F1DFA6"/><stop offset=".55" stop-color="#D9BE6F"/><stop offset="1" stop-color="#9A7E3A"/>
+    </linearGradient>
+    <linearGradient id="scale" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F1DFA6"/><stop offset=".5" stop-color="#D9BE6F"/><stop offset="1" stop-color="#9A7E3A"/>
+    </linearGradient>
+    <linearGradient id="scalem" x1="1" y1="0" x2="0" y2="0">
+      <stop offset="0" stop-color="#F1DFA6"/><stop offset=".5" stop-color="#D9BE6F"/><stop offset="1" stop-color="#9A7E3A"/>
+    </linearGradient>
+    <filter id="blur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="blur2" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2"/></filter>
+    <filter id="drop" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#2B2A26" flood-opacity=".18"/></filter>
   </defs>
 </svg>
 
@@ -246,26 +280,37 @@ function smooth(pts){
 const ell=(cx,cy,rx,ry)=>smooth(Array.from({length:10},(_,k)=>{const a=k/10*Math.PI*2;return [rd(cx+rx*Math.cos(a)),rd(cy+ry*Math.sin(a))]}));
 const MIRROR='translate(400 0) scale(-1 1)';
 
-const BODY=smooth(sym([[200,44],[214,48],[226,62],[228,82],[220,102],[211,116],[211,140],[211,170],[214,192],[236,204],[258,232],[268,280],[266,340],[256,392],[240,428],[226,448],[232,470],[228,498],[214,516],[200,522]]));
-const WING=smooth([[230,202],[262,186],[300,170],[340,158],[376,156],[392,166],[386,184],[360,202],[330,226],[300,256],[272,290],[252,318],[244,300],[248,260],[240,230]]);
-const LEG=smooth([[236,404],[256,414],[258,452],[250,486],[246,520],[244,548],[236,552],[234,520],[232,486],[228,452],[226,420]]);
-const TOES='M240 550 L226 574 M240 550 L241 578 M240 550 L255 574';
-const BEAK='M200 28 L192 46 L208 46 Z';
+/* tinta y tonos fijos de la lámina (independientes del tema) */
+const INK='#2B2A26',SHADE='#B9AC93',SKIN_L='#F4EFE4',SKIN_D='#C9BDA6';
 
+/* silueta de la gallina desplumada: alas extendidas, patas hacia atrás (mitad derecha + espejo) */
+const HEAD_D=smooth(sym([[200,36],[209,39],[217,50],[220,66],[218,84],[212,97],[205,105],[200,107]]));
+const HEAD_V=smooth(sym([[200,40],[213,44],[223,58],[226,76],[223,96],[215,112],[207,123],[200,126]]));
+const BODY=smooth(sym([[200,100],[212,104],[221,118],[223,144],[221,172],[228,194],[248,206],[264,228],[275,262],[279,300],[275,342],[263,382],[249,412],[239,434],[231,448],[218,458],[200,462]]));
+const WING=smooth([[236,198],[262,186],[290,176],[318,168],[344,160],[366,157],[382,164],[387,178],[378,196],[356,208],[330,226],[304,252],[280,282],[262,306],[248,308],[244,282],[246,250],[240,220]]);
+const THIGH=smooth([[236,370],[254,376],[268,394],[276,420],[270,440],[254,442],[240,426],[232,400]]);
+const SHANK=smooth([[250,428],[268,432],[269,462],[263,494],[254,500],[249,472],[246,448]]);
+const TARSUS=smooth([[252,496],[262,496],[261,524],[259,548],[251,548],[249,524]]);
+const TAIL=smooth(sym([[200,446],[216,450],[229,466],[233,488],[224,506],[212,514],[200,516]]));
+const TOES='M255 548 L238 573 M255 548 L254 581 M255 548 L271 573 M255 548 L267 541';
+const CLAWS='M238 573 l-3 5 M254 581 l0 6 M271 573 l3 5 M267 541 l4 -2';
+
+/* pterilas (mismos ids que antes; formas siguiendo la lámina clásica) */
 const P={
-  head: ell(200,78,21,27),
-  headV: smooth(sym([[200,84],[211,85],[219,91],[218,100],[210,110],[200,114]])),
-  espinal: smooth(sym([[200,118],[206,122],[207,170],[207,200],[211,250],[222,300],[226,340],[218,390],[209,428],[200,444]])),
-  caudal: smooth(sym([[200,452],[222,458],[228,484],[214,510],[200,516]])),
-  cervical: smooth(sym([[200,112],[206,116],[207,160],[208,196],[200,200]])),
-  belly: smooth(sym([[200,378],[208,382],[210,420],[208,456],[200,464]])),
-  humeral: smooth([[236,206],[268,190],[298,176],[304,190],[282,206],[256,218],[240,220]]),
-  alar: smooth([[306,178],[344,162],[376,160],[388,170],[380,186],[354,200],[326,222],[298,250],[274,282],[266,270],[276,240],[292,214]]),
-  femoral: smooth([[234,348],[254,356],[258,392],[246,414],[232,408],[228,378]]),
-  cruralD: smooth([[234,436],[252,440],[252,480],[244,492],[236,488],[230,462]]),
-  cruralV: smooth([[232,400],[254,406],[258,446],[248,470],[236,466],[228,430]]),
-  axilar: smooth([[246,214],[276,214],[292,228],[270,244],[250,250],[240,234]]),
-  band: smooth([[206,202],[222,212],[238,244],[242,284],[236,322],[224,350],[212,374],[204,372],[210,346],[222,318],[226,284],[222,250],[208,222],[200,206]]),
+  head: smooth(sym([[200,44],[209,47],[216,58],[218,72],[215,87],[208,98],[200,102]])),
+  headV: smooth(sym([[200,86],[212,88],[220,95],[220,107],[213,118],[205,124],[200,126]])),
+  espinal: smooth(sym([[200,106],[206,110],[208,140],[208,180],[214,200],[224,222],[226,250],[219,276],[216,300],[229,326],[243,352],[248,380],[240,408],[227,432],[213,446],[200,450]])),
+  caudal: smooth(sym([[200,452],[214,455],[226,468],[229,488],[221,504],[210,510],[200,512]])),
+  cervical: smooth(sym([[200,128],[206,132],[207,166],[210,198],[200,204]])),
+  humeral: smooth([[236,206],[258,196],[280,188],[298,186],[302,196],[284,206],[262,216],[244,224],[234,220]]),
+  alar: smooth([[308,178],[336,168],[362,162],[380,168],[382,182],[370,196],[348,210],[322,230],[298,256],[276,284],[262,302],[254,294],[264,266],[282,234],[296,210]]),
+  femoral: smooth([[236,368],[250,366],[266,390],[276,418],[270,434],[258,432],[246,410],[234,388]]),
+  cruralD: smooth([[252,434],[266,438],[266,462],[262,486],[254,490],[250,468],[248,448]]),
+  cruralV: smooth([[240,388],[258,392],[268,414],[268,446],[262,472],[252,478],[246,456],[240,424]]),
+  axilar: smooth([[248,214],[272,212],[290,224],[280,242],[258,250],[244,238]]),
+  /* ventral: anillo (dos bandas pectorales + abdomen) con el apterio de la quilla como hueco (evenodd) */
+  ventral: smooth(sym([[200,198],[220,206],[236,232],[242,270],[240,310],[232,346],[220,372],[214,400],[214,436],[208,458],[200,462]]))
+          +smooth(sym([[200,210],[210,222],[222,250],[226,282],[224,318],[214,352],[204,374],[200,380]])),
 };
 
 /* ---------- content ---------- */
@@ -281,7 +326,7 @@ const REGIONS=[
   {id:'cefalico_v',name:'Cefálico',view:'ventral',shapes:[[P.headV]],desc:'En la vista ventral solo asoma la parte baja de la pterila cefálica: mejillas y garganta, alrededor de las barbillas. El resto de la cabeza queda oculto por la cara del ave (cresta, ojos y pico), que en esta vista mira hacia nosotros.'},
   {id:'cervical',name:'Cervical',view:'ventral',shapes:[[P.cervical]],desc:'Franja ventral del cuello, desde la garganta hasta la entrada del pecho. Al llegar al tórax se bifurca en las dos bandas pectorales de la pterila ventral.'},
   {id:'axilar',name:'Axilar',view:'ventral',shapes:[[P.axilar],[P.axilar,MIRROR]],desc:'Pequeña región en la axila, en la cara interna del ala junto al cuerpo. Cubre el hueco entre el ala y el flanco cuando el ala se pliega.'},
-  {id:'ventral',name:'Ventral',view:'ventral',shapes:[[P.band],[P.band,MIRROR],[P.belly]],desc:'Dos bandas que bajan desde el cuello a ambos lados de la quilla y convergen en el abdomen hasta la cloaca. Entre ellas queda un apterio: la zona desnuda que en la gallina clueca forma el parche de incubación.'},
+  {id:'ventral',name:'Ventral',view:'ventral',shapes:[[P.ventral]],desc:'Dos bandas que bajan desde el cuello a ambos lados de la quilla y convergen en el abdomen hasta la cloaca. Entre ellas queda un apterio: la zona desnuda que en la gallina clueca forma el parche de incubación.'},
   {id:'crural_v',name:'Crural',view:'ventral',shapes:[[P.cruralV],[P.cruralV,MIRROR]],desc:'Cara interna del muslo y la pierna, tal como se ve con el ave boca arriba. Es la misma pterila crural de la vista dorsal.'},
 ];
 const NAMES=[...new Set(REGIONS.map(r=>r.name))];
@@ -290,55 +335,133 @@ const byId=Object.fromEntries(REGIONS.map(r=>[r.id,r]));
 /* label positions: [regionId, anchor point on region, text position, text-anchor] */
 const LABELS={
   dorsal:[
-    ['cefalico_d',[182,72],[126,60],'end'],
-    ['alar',[58,174],[28,134],'start'],
-    ['humeral',[272,198],[318,146],'start'],
-    ['espinal',[206,262],[298,326],'start'],
-    ['femoral',[248,384],[318,392],'start'],
-    ['crural_d',[160,462],[112,470],'end'],
-    ['caudal',[188,492],[124,522],'end'],
+    ['cefalico_d',[184,66],[122,58],'end'],
+    ['alar',[62,178],[30,130],'start'],
+    ['humeral',[272,200],[318,146],'start'],
+    ['espinal',[216,300],[304,320],'start'],
+    ['femoral',[262,394],[318,392],'start'],
+    ['crural_d',[142,462],[108,470],'end'],
+    ['caudal',[190,498],[124,536],'end'],
   ],
   ventral:[
-    ['cefalico_v',[184,100],[126,92],'end'],
-    ['cervical',[206,150],[298,120],'start'],
-    ['axilar',[134,230],[70,300],'end'],
-    ['ventral',[202,424],[110,376],'end'],
-    ['crural_v',[248,440],[318,448],'start'],
+    ['cefalico_v',[181,98],[120,92],'end'],
+    ['cervical',[207,164],[298,134],'start'],
+    ['axilar',[132,230],[68,300],'end'],
+    ['ventral',[210,420],[112,386],'end'],
+    ['crural_v',[264,440],[318,448],'start'],
   ]
 };
 
 /* ---------- build svgs ---------- */
+let uid=0;
+/* volumen: relleno con gradiente + sombra interior (trazo ancho desenfocado recortado a la forma) + contorno */
+function vol(d,fill,o={}){
+  const id='clip'+(++uid),tr=o.t?` transform="${o.t}"`:'';
+  return `<g${tr}><clipPath id="${id}"><path d="${d}"/></clipPath><path d="${d}" fill="${fill}"/>`+
+    `<g clip-path="url(#${id})"><path d="${d}" fill="none" stroke="${SHADE}" stroke-width="${o.w||12}" opacity="${o.o||.55}" filter="url(#blur)"/>${o.inner||''}</g>`+
+    `<path d="${d}" fill="none" stroke="${INK}" stroke-width="${o.sw||1.4}" stroke-linejoin="round"/></g>`;
+}
+const fold=(d,t,op=.8,w=.8)=>`<path d="${d}" fill="none" stroke="${SHADE}" stroke-width="${w}" stroke-linecap="round" opacity="${op}"${t?` transform="${t}"`:''}/>`;
+const fine=(d,t,col=INK,w=.6,op=.7)=>`<path d="${d}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" opacity="${op}"${t?` transform="${t}"`:''}/>`;
+
+function wing(t){
+  const m=t?'m':'';
+  /* patagio: membrana del borde anterior, más clara; huesos del brazo insinuados por sombra difusa; hueco de la mano */
+  const inner=`<path d="M238 202 Q292 178 348 165 Q300 190 250 214 Z" fill="${SKIN_L}" opacity=".7"/>`+
+    `<path d="M250 214 L292 191 L346 171 L380 172" fill="none" stroke="${SHADE}" stroke-width="6" opacity=".5" filter="url(#blur2)"/>`+
+    `<path d="M300 256 Q334 232 366 202" fill="none" stroke="${SHADE}" stroke-width="5" opacity=".4" filter="url(#blur2)"/>`;
+  return vol(WING,`url(#skinW${m})`,{t,inner,w:10,o:.5})+
+    fine('M246 212 Q296 187 346 168',t,SHADE,.7,.9)+   // pliegue del propatagio
+    fine('M292 192 Q300 200 306 210',t,SHADE,.7,.9)+   // codo
+    fine('M346 172 Q356 174 366 182',t,SHADE,.7,.9);   // muñeca / mano
+}
+function leg(t,ventral){
+  const m=t?'m':'';
+  let s=vol(THIGH,`url(#skinR${m})`,{t,w:10,o:.5})+vol(SHANK,`url(#skinR${m})`,{t,w:8,o:.5})+
+    vol(TARSUS,`url(#scale${m})`,{t,w:5,o:.45,sw:1.1});
+  // escamas del tarso
+  for(let y=502;y<546;y+=5.5)s+=fine(`M${rd(250+(y-496)/52*-1)} ${y} L${rd(262-(y-496)/52*3)} ${y}`,t,'#9A7E3A',.5,.55);
+  // dedos: trazo oscuro + trazo claro interior (volumen), garras
+  s+=`<g${t?` transform="${t}"`:''}><path d="${TOES}" fill="none" stroke="${INK}" stroke-width="4.2" stroke-linecap="round"/><path d="${TOES}" fill="none" stroke="#D9BE6F" stroke-width="2.6" stroke-linecap="round"/><path d="${CLAWS}" fill="none" stroke="${INK}" stroke-width="1.6" stroke-linecap="round"/></g>`;
+  // pliegue de la corva (articulación tibiotarsiana) y del muslo
+  s+=fold('M252 496 Q257 492 262 496',t,.9)+fold(ventral?'M244 404 Q254 412 262 426':'M246 396 Q258 402 266 416',t,.7);
+  return s;
+}
+function tailQuills(){
+  // base de las rectrices: cañones cortados que asoman bajo el borde de la cola
+  let s='';
+  for(let k=0;k<7;k++){
+    const a=(k-3)/3*1.0,sx=Math.sin(a),cy=Math.cos(a);
+    const x1=rd(200+sx*40),y1=rd(452+cy*40),x2=rd(200+sx*88),y2=rd(452+cy*88);
+    const ang=rd(-a*180/Math.PI);
+    s+=`<g transform="translate(${rd(200+sx*71)} ${rd(452+cy*71)}) rotate(${ang})"><ellipse rx="3" ry="17" fill="#EFE8D8" stroke="${INK}" stroke-width=".6" opacity=".92"/></g>`+
+       `<path d="M${x1} ${y1} L${x2} ${y2}" stroke="${INK}" stroke-width=".7" opacity=".6"/>`;
+  }
+  return s;
+}
+
 function buildSVG(view){
   const regs=REGIONS.filter(r=>r.view===view);
-  let s=`<svg viewBox="0 0 400 590" role="img" aria-label="Ave en vista ${view}, con las pterilas marcadas">`;
-  if(view==='dorsal')s+=`<path class="bird thin" d="${BEAK}"/>`;
-  s+=`<path class="bird" d="${WING}"/><path class="bird" d="${WING}" transform="${MIRROR}"/>`;
-  s+=`<path class="bird" d="${LEG}"/><path class="bird" d="${LEG}" transform="${MIRROR}"/>`;
-  s+=`<path class="toes" d="${TOES}"/><path class="toes" d="${TOES}" transform="${MIRROR}"/>`;
-  s+=`<path class="bird" d="${BODY}"/>`;
-  if(view==='ventral'){
-    s+=`<path class="toes" d="M200 214 L200 392" stroke-dasharray="2 5" opacity=".55"/>`;
+  const dorsal=view==='dorsal';
+  let s=`<svg viewBox="0 0 400 590" role="img" aria-label="Gallina desplumada en vista ${view}, con las pterilas marcadas">`;
+  // lámina de papel
+  s+=`<rect width="400" height="590" fill="url(#paper)"/><rect x="6.5" y="6.5" width="387" height="577" fill="none" stroke="#E3DCCB" stroke-width="1"/>`;
+  s+=`<g filter="url(#drop)">`;
+  // alas y cola por debajo del cuerpo
+  s+=wing()+wing(MIRROR);
+  s+=tailQuills();
+  s+=vol(TAIL,'url(#skinR)',{w:9,o:.5});
+  // patas (extendidas hacia atrás)
+  s+=leg(null,!dorsal)+leg(MIRROR,!dorsal);
+  // cuerpo con cuello
+  const bodyInner=dorsal
+    ?`<path d="M200 118 L200 440" fill="none" stroke="${SKIN_L}" stroke-width="10" opacity=".55" filter="url(#blur2)"/>`   // lomo: cresta de luz sobre la columna
+    :`<path d="M204 216 L204 396" fill="none" stroke="${SHADE}" stroke-width="7" opacity=".55" filter="url(#blur2)"/><path d="M198 214 L198 394" fill="none" stroke="#FFFFFF" stroke-width="3" opacity=".6" filter="url(#blur2)"/>`; // quilla
+  s+=vol(BODY,'url(#skinR)',{w:14,o:.55,inner:bodyInner});
+  // pliegues sutiles
+  if(dorsal){
+    s+=fold('M180 190 Q200 199 220 190')+fold('M240 214 Q250 232 246 252')+fold('M160 214 Q150 232 154 252')+fold('M188 440 Q200 446 212 440',null,.7);
   }else{
-    s+=`<path class="bird thin" d="M191 46 l3 -10 l4 8 l2 -13 l2 13 l4 -8 l3 10 Z"/>`;
+    s+=fold('M182 204 Q200 212 218 204')+fold('M172 398 Q200 410 228 398')+fold('M178 430 Q200 438 222 430',null,.6);
+    s+=`<ellipse cx="200" cy="456" rx="5" ry="2.4" fill="${SHADE}" stroke="${INK}" stroke-width=".6" opacity=".9"/>`; // cloaca
   }
+  // cabeza
+  s+=vol(dorsal?HEAD_D:HEAD_V,'url(#skinR)',{w:9,o:.5});
+  if(dorsal){
+    s+=fold('M186 104 Q200 110 214 104',null,.7);
+    // pico visto desde arriba (culmen) y narinas
+    s+=`<path d="M200 18 L191.5 44 Q200 48 208.5 44 Z" fill="url(#beak)" stroke="${INK}" stroke-width=".9" stroke-linejoin="round"/><path d="M200 21 L200 44" stroke="#9A7E3A" stroke-width=".6" opacity=".8"/><ellipse cx="196.4" cy="38" rx="1.1" ry="1.9" fill="#9A7E3A"/><ellipse cx="203.6" cy="38" rx="1.1" ry="1.9" fill="#9A7E3A"/>`;
+  }
+  s+='</g>';
+  // regiones (interactivas): tono de piel bajo los folículos + capa de resaltado + folículos
   for(const r of regs){
     s+=`<g class="region" data-id="${r.id}" tabindex="0" role="button" aria-label="Región ${r.name}, vista ${r.view}">`;
     for(const [d,t] of r.shapes){
       const tr=t?` transform="${t}"`:'';
-      s+=`<path class="base" d="${d}"${tr}/><path class="dots" d="${d}" fill="url(#dots)"${tr}/>`;
+      s+=`<path class="dots tint" d="${d}"${tr}/><path class="base" d="${d}"${tr}/><path class="dots" d="${d}" fill="url(#dots)"${tr}/>`;
     }
     s+='</g>';
   }
-  if(view==='ventral'){
-    // face features on top of the head: comb, eyes, beak pointing at the viewer, wattles
-    s+=`<g class="face" pointer-events="none">
-      <path class="bird thin" d="M186 60 l3 -11 l5 8 l4 -13 l4 13 l5 -8 l3 11 Z"/>
-      <circle cx="186" cy="74" r="3" class="eye"/><circle cx="214" cy="74" r="3" class="eye"/>
-      <path class="bird thin" d="M190 76 L210 76 L200 102 Z"/><path class="toes" d="M200 76 L200 100" stroke-width="1"/>
-      <circle cx="196" cy="81" r="1.1" class="eye"/><circle cx="204" cy="81" r="1.1" class="eye"/>
-      <ellipse cx="194" cy="107" rx="3.6" ry="6.5" class="bird thin"/><ellipse cx="206" cy="107" rx="3.6" ry="6.5" class="bird thin"/>
+  // rasgos de la cara (encima de las regiones, sin captar eventos)
+  if(dorsal){
+    s+=`<g pointer-events="none" filter="url(#drop)">
+      <path d="M200 43 L203 49 L201 55 L204 61 L201 67 L204.5 73 L201 79 L204 86 L200 94 L196 86 L199 79 L195.5 73 L199 67 L196 61 L199 55 L197 49 Z" fill="url(#comb)" stroke="${INK}" stroke-width=".8" stroke-linejoin="round"/>
+      <ellipse cx="182.6" cy="66" rx="1.9" ry="3.6" fill="${INK}"/><ellipse cx="217.4" cy="66" rx="1.9" ry="3.6" fill="${INK}"/>
+    </g>`;
+  }else{
+    s+=`<g pointer-events="none" filter="url(#drop)">
+      <path d="M186 48 C184 40 186 30 189 27 L192 36 L195 22 L198 34 L200 18 L202 34 L205 22 L208 36 L211 27 C214 30 216 40 214 48 Z" fill="url(#comb)" stroke="${INK}" stroke-width=".9" stroke-linejoin="round"/>
+      <circle cx="186" cy="74" r="5.4" fill="none" stroke="#D9BE6F" stroke-width="1.2" opacity=".7"/><circle cx="214" cy="74" r="5.4" fill="none" stroke="#D9BE6F" stroke-width="1.2" opacity=".7"/>
+      <circle cx="186" cy="74" r="3.6" fill="${INK}"/><circle cx="214" cy="74" r="3.6" fill="${INK}"/>
+      <circle cx="184.8" cy="72.8" r="1" fill="#FFFFFF" opacity=".85"/><circle cx="212.8" cy="72.8" r="1" fill="#FFFFFF" opacity=".85"/>
+      <path d="M190.5 80 Q200 74 209.5 80 L202 105 Q200 107 198 105 Z" fill="url(#beak)" stroke="${INK}" stroke-width=".9" stroke-linejoin="round"/>
+      <path d="M200 79 L200 105" stroke="#9A7E3A" stroke-width=".6" opacity=".8"/>
+      <ellipse cx="196.2" cy="87" rx="1.2" ry="1.9" fill="#9A7E3A"/><ellipse cx="203.8" cy="87" rx="1.2" ry="1.9" fill="#9A7E3A"/>
+      <ellipse cx="193.8" cy="117" rx="4.6" ry="9.2" fill="url(#comb)" stroke="${INK}" stroke-width=".8"/><ellipse cx="206.2" cy="117" rx="4.6" ry="9.2" fill="url(#comb)" stroke="${INK}" stroke-width=".8"/>
     </g>`;
   }
+  // escala
+  s+=`<g fill="${INK}" stroke="${INK}" stroke-width=".9" opacity=".75"><path d="M26 566 L83 566 M26 562 L26 570 M83 562 L83 570"/><text x="54.5" y="559" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8.5" stroke="none">≈ 5 cm</text></g>`;
   s+='<g class="labels">';
   for(const [id,a,t,anc] of LABELS[view]){
     const r=byId[id];
