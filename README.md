@@ -4,7 +4,7 @@ Juego interactivo para memorizar las 10 pterilas (regiones de inserción de las 
 
 Material didáctico de la asignatura **Sistemas de Producción Avícola**.
 
-Autor: Gustavo Alonso Ardón, MSc. — Centro Integral de Aprovechamiento Avícola (CIAA), Facultad de Medicina Veterinaria y Zootecnia, Universidad Nacional de Agricultura, Catacamas, Olancho, Honduras.
+Autor: Gustavo Alonso Ardón, MSc. — Centro Integral de Aprendizaje Avícola (CIAA), Facultad de Medicina Veterinaria y Zootecnia, Universidad Nacional de Agricultura, Catacamas, Olancho, Honduras.
 
 Lámina de referencia: «Distribución de las plumas», del documento *La Industria Avícola* de la misma asignatura.
 
