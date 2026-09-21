@@ -9,3 +9,5 @@ Autor: Gustavo Alonso Ardón, MSc. — Centro Integral de Aprendizaje Avícola (
 Lámina de referencia: «Distribución de las plumas», del documento *La Industria Avícola* de la misma asignatura.
 
 Publicado con GitHub Pages: https://gardon-hub.github.io/pterilas/
+
+Licencia: MIT — véase [LICENSE](LICENSE).
